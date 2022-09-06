@@ -4,9 +4,14 @@
   "description": "web3 wallet demo",
   "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "NODE_ENV=development vite",
+    "build": "NODE_ENV=production vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx --format codeframe",
+    "lint:local": "npm run lint -- src",
+    "lint:fix": "npm run lint:local -- --fix",
+    "format": "prettier-eslint --write",
+    "format:local": "npm run format -- $PWD/'src/**/*.{js,jsx,ts,tsx}'"
   },
   "repository": {
     "type": "git",
@@ -18,15 +23,55 @@
     "url": "https://github.com/zadzbw/web3-demo/issues"
   },
   "homepage": "https://github.com/zadzbw/web3-demo#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "npm run format"
+    ]
+  },
+  "browserslist": [
+    "defaults",
+    "> 1%",
+    "not IE 11"
+  ],
+  "engines": {
+    "node": ">= 16"
+  },
   "dependencies": {
+    "@ethersproject/providers": "^5.7.0",
+    "@ethersproject/units": "^5.7.0",
+    "@web3-react/core": "6",
+    "events": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@types/node": "^18.7.15",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
     "@vitejs/plugin-react": "^2.1.0",
+    "autoprefixer": "^10.4.8",
+    "eslint": "8.22.0",
+    "eslint-formatter-codeframe": "^7.32.1",
+    "eslint-plugin-react": "^7.31.7",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "4",
+    "lint-staged": "^13.0.3",
+    "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
+    "prettier-eslint-cli": "^7.1.0",
+    "sass": "^1.54.8",
+    "tailwindcss": "^3.1.8",
     "typescript": "^4.8.2",
     "vite": "^3.1.0"
   }

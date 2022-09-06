@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
+import Header from '@/components/Header'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-    </div>
+    <>
+      <Header />
+      <button
+        className={'m-2 p-2 border rounded text-red-500 font-bold'}
+        onClick={() => setCount((v) => v + 1)}
+      >
+        count is {count}
+      </button>
+    </>
   )
 }
 

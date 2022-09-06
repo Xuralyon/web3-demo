@@ -1,0 +1,13 @@
+@layer components {
+  .header {
+    @apply font-bold text-3xl;
+  }
+
+  .all-center {
+    @apply flex justify-center items-center w-full h-full
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+}
