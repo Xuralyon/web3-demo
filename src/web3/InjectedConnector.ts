@@ -26,19 +26,30 @@ export class UserRejectedRequestError extends Error {
 }
 
 export class InjectedConnector extends AbstractConnector {
+  private readonly provider: Ethereum | undefined
+
   constructor(args: AbstractConnectorArguments) {
     super(args)
 
     this.handleChainChanged = this.handleChainChanged.bind(this)
     this.handleAccountsChanged = this.handleAccountsChanged.bind(this)
     this.handleDisconnect = this.handleDisconnect.bind(this)
+    this.provider = window.ethereum
+  }
+
+  public async getProvider() {
+    return this.provider
+  }
+
+  private getProviderSync() {
+    return window.ethereum
   }
 
   private handleChainChanged(chainId: string | number): void {
     if (__DEV__) {
       console.log("Handling 'chainChanged' event with payload", chainId)
     }
-    this.emitUpdate({ chainId, provider: window.ethereum })
+    this.emitUpdate({ chainId, provider: this.getProviderSync() })
   }
 
   private handleAccountsChanged(accounts: string[]): void {
@@ -60,20 +71,21 @@ export class InjectedConnector extends AbstractConnector {
   }
 
   public async activate(): Promise<ConnectorUpdate> {
-    if (!window.ethereum) {
+    const provider = this.getProviderSync()
+    if (!provider) {
       throw new NoEthereumProviderError()
     }
 
-    if (window.ethereum.on) {
-      window.ethereum.on('chainChanged', this.handleChainChanged)
-      window.ethereum.on('accountsChanged', this.handleAccountsChanged)
-      window.ethereum.on('disconnect', this.handleDisconnect)
+    if (provider.on) {
+      provider.on('chainChanged', this.handleChainChanged)
+      provider.on('accountsChanged', this.handleAccountsChanged)
+      provider.on('disconnect', this.handleDisconnect)
     }
 
     // try to activate + get account via eth_requestAccounts
     let account
     try {
-      account = await window.ethereum
+      account = await provider
         .request({
           method: 'eth_requestAccounts',
         })
@@ -85,21 +97,18 @@ export class InjectedConnector extends AbstractConnector {
       warning(false, 'eth_requestAccounts was unsuccessful')
     }
 
-    return { provider: window.ethereum, ...(account ? { account } : {}) }
-  }
-
-  public async getProvider(): Promise<any> {
-    return window.ethereum
+    return { provider, ...(account ? { account } : {}) }
   }
 
   public async getChainId(): Promise<number | string> {
-    if (!window.ethereum) {
+    const provider = this.getProviderSync()
+    if (!provider) {
       throw new NoEthereumProviderError()
     }
 
     let chainId
     try {
-      chainId = await window.ethereum
+      chainId = await provider
         .request({
           method: 'eth_chainId',
         })
@@ -112,13 +121,14 @@ export class InjectedConnector extends AbstractConnector {
   }
 
   public async getAccount(): Promise<null | string> {
-    if (!window.ethereum) {
+    const provider = this.getProviderSync()
+    if (!provider) {
       throw new NoEthereumProviderError()
     }
 
     let account
     try {
-      account = await window.ethereum
+      account = await provider
         .request({
           method: 'eth_accounts',
         })
@@ -131,20 +141,22 @@ export class InjectedConnector extends AbstractConnector {
   }
 
   public deactivate() {
-    if (window.ethereum && window.ethereum.removeListener) {
-      window.ethereum.removeListener('chainChanged', this.handleChainChanged)
-      window.ethereum.removeListener('accountsChanged', this.handleAccountsChanged)
-      window.ethereum.removeListener('disconnect', this.handleDisconnect)
+    const provider = this.getProviderSync()
+    if (provider && provider.removeListener) {
+      provider.removeListener('chainChanged', this.handleChainChanged)
+      provider.removeListener('accountsChanged', this.handleAccountsChanged)
+      provider.removeListener('disconnect', this.handleDisconnect)
     }
   }
 
   async isAuthorized(): Promise<boolean> {
-    if (!window.ethereum) {
+    const provider = this.getProviderSync()
+    if (!provider) {
       return false
     }
 
     try {
-      return await window.ethereum
+      return await provider
         .request({
           method: 'eth_accounts',
         })
