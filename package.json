@@ -46,6 +46,7 @@
   "dependencies": {
     "@ethersproject/providers": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
+    "@metamask/safe-event-emitter": "^2.0.0",
     "@web3-react/core": "6",
     "events": "^3.3.0",
     "react": "^18.2.0",

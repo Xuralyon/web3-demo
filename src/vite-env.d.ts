@@ -8,10 +8,12 @@ interface RequestArguments {
   params?: unknown[] | object
 }
 
+type Listener = (...args: any[]) => void
+
 interface Ethereum {
   request: (args: RequestArguments) => Promise<unknown>
-  on?: (method: string, listener: (...args: any[]) => void) => void
-  removeListener?: (method: string, listener: (...args: any[]) => void) => void
+  on?: (method: string, listener: Listener) => void
+  removeListener?: (method: string, listener: Listener) => void
 }
 
 declare interface Window {
