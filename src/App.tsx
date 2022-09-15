@@ -14,16 +14,18 @@ function App() {
         count is {count}
       </button>
       <button
+        id="test-a"
         className={'m-2 p-2 border rounded text-red-500 font-bold'}
         onClick={() => window.aaa()}
       >
-        aaa
+        0
       </button>
       <button
+        id="test-b"
         className={'m-2 p-2 border rounded text-red-500 font-bold'}
         onClick={() => window.bbb()}
       >
-        bbb
+        0
       </button>
     </>
   )
