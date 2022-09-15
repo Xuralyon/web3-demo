@@ -13,6 +13,18 @@ function App() {
       >
         count is {count}
       </button>
+      <button
+        className={'m-2 p-2 border rounded text-red-500 font-bold'}
+        onClick={() => window.aaa()}
+      >
+        aaa
+      </button>
+      <button
+        className={'m-2 p-2 border rounded text-red-500 font-bold'}
+        onClick={() => window.bbb()}
+      >
+        bbb
+      </button>
     </>
   )
 }

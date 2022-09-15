@@ -18,4 +18,6 @@ interface Ethereum {
 
 declare interface Window {
   ethereum?: Ethereum
+  aaa: () => void
+  bbb: () => void
 }
