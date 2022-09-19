@@ -16,7 +16,7 @@ function App() {
       <button
         id="test-a"
         className={'m-2 p-2 border rounded text-red-500 font-bold'}
-        onClick={() => window.aaa()}
+        onClick={() => window.ethereum?.request({ method: 'eth_requestAccounts' })}
       >
         0
       </button>
