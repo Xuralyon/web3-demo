@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <button
         className={'m-2 p-2 border rounded text-red-500 font-bold'}
         onClick={() => setCount((v) => v + 1)}

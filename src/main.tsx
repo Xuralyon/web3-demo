@@ -12,7 +12,7 @@ const getLibrary = (provider: any) => {
 const root = createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-  <Web3ReactProvider getLibrary={getLibrary}>
-    <App />
-  </Web3ReactProvider>,
+  // <Web3ReactProvider getLibrary={getLibrary}>
+  <App />,
+  // </Web3ReactProvider>,
 )
