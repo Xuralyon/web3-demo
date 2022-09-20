@@ -12,9 +12,15 @@ function App() {
         count is {count}
       </button>
       <button
-        id="test-a"
         className={'m-2 p-2 border rounded text-red-500 font-bold'}
         onClick={() => window.ethereum?.request({ method: 'eth_requestAccounts' })}
+      >
+        connect
+      </button>
+      <button
+        id="test-a"
+        className={'m-2 p-2 border rounded text-red-500 font-bold'}
+        onClick={() => window.aaa()}
       >
         0
       </button>
